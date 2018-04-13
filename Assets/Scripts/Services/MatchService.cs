@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using GameSparks.Api.Messages;
+using GameSparks.Api.Requests;
 using GameSparks.Api.Responses;
 using Gui;
 using Models;
@@ -42,14 +44,11 @@ namespace Services
             _matchGui.MatchNameIpt.text = "";
             _matchGui.MatchDetails.text = "";
         }
-        
+
         private void OnFindMatchReceived(int skill, string shortCode)
         {
             _matchGui.MatchDetails.text = "Searching For Players...";
-            new GameSparks.Api.Requests.MatchmakingRequest()
-                .SetSkill(skill)    
-                .SetMatchShortCode(shortCode)
-                .Send(OnMatchMakingResponseReceived);
+            SparkService.MatchmakingRequest(skill, shortCode, OnMatchMakingResponseReceived);
         }
         
         private void OnMatchFound(MatchFoundMessage m)

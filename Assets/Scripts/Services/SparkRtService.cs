@@ -10,7 +10,9 @@ namespace Services
 {
     public class SparkRtService
     {
-        public SparkRtService(Settings settings, GameSparksRTUnity gameSparksRtUnity)
+        public SparkRtService(
+            Settings settings,
+            GameSparksRTUnity gameSparksRtUnity)
         {
             _rtConnected = false;
             _settings = settings;
@@ -106,6 +108,13 @@ namespace Services
                         case (int) OpCode.Pong:
                             OnPongReceived(packet);
                             break;
+                        
+                        // On packet 103, Leave current session. Send Match Making Request
+                        case 103:
+                            LeaveSession();
+                            SparkService.MatchmakingRequest(0, "Alpha", null);
+                            break;
+                        
                         default:
                             OnBlankPacketReceived(packet);
                             break;
